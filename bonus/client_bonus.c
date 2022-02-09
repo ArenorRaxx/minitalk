@@ -6,7 +6,7 @@
 /*   By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 18:28:34 by mcorso            #+#    #+#             */
-/*   Updated: 2022/02/09 11:02:53 by mcorso           ###   ########.fr       */
+/*   Updated: 2022/02/09 18:46:38 by mcorso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void		receipt(int sig)
 {
+	(void)sig;
 	write(1, "Message has been received.\n", 27);
 }
 

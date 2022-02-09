@@ -6,7 +6,7 @@
 #    By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/07 18:59:36 by mcorso            #+#    #+#              #
-#    Updated: 2022/02/09 18:44:28 by mcorso           ###   ########.fr        #
+#    Updated: 2022/02/09 18:51:18 by mcorso           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,10 @@ NAME			=		minitalk
 CC				=		gcc
 CFLAGS			=		-Wall -Werror -Wextra
 
+#	clean
+CLEAN			=		$(SERVER_BOBJS) $(SERVER_OBJS) $(CLIENT_BOBJS) $(CLIENT_OBJS)
+FCLEAN			=		$(SERVER_BNAME) $(SERVER_NAME) $(CLIENT_BNAME) $(CLIENT_NAME)
+
 #	rules
 $(NAME)			:		$(SERVER_NAME) $(CLIENT_NAME)
 
@@ -54,10 +58,10 @@ $(CLIENT_BNAME)	:		$(CLIENT_BOBJS)
 all				:		$(NAME) bonus
 
 clean			:
-						rm -rf $(SERVER_OBJS) $(CLIENT_OBJS)
+						rm -rf $(CLEAN)
 
 fclean			:		clean
-						rm -rf $(SERVER_NAME) $(CLIENT_NAME)
+						rm -rf $(FCLEAN)
 
 re				:		fclean all
 
