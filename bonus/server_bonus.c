@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "../minitalk.h"
 
-static void	reset_all(char **buffer, pid_t *last_pid, int *i, int *offset)
+static void	reset_all(unsigned char **buffer, pid_t *last_pid, int *i, int *offset)
 {
 	free(*buffer);
 	*buffer = NULL;
@@ -32,10 +32,10 @@ static void	print_pid(pid_t pid)
 	write(1, &nb, 1);	
 }
 
-static void	manage_buffer(char **buffer, int len)
+static void	manage_buffer(unsigned char **buffer, int len)
 {
-	int		i;
-	char	*tmp;
+	int				i;
+	unsigned char	*tmp;
 
 	i = 0;
 	tmp = *buffer;
@@ -58,12 +58,11 @@ static void	manage_buffer(char **buffer, int len)
 
 static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 {
-	static int		i = 0;
-	static int		offset = 0;
-	static char		*buffer = NULL;
-	static pid_t	last_pid = 0;
+	static int				i = 0;
+	static int				offset = 0;
+	static pid_t			last_pid = 0;
+	static unsigned char	*buffer = NULL;
 
-	(void)context;
 	if (last_pid && meta->si_pid != last_pid)
 		reset_all(&buffer, &last_pid, &i, &offset);
 	last_pid = meta->si_pid;
@@ -72,12 +71,14 @@ static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 		buffer[i] |= (1 << offset);
 	else
 		buffer[i] &= ~(1 << offset);
-	if (++offset == 8)
+	if (++offset == 9)
 	{
 		if (buffer[i++] == '\0')
 		{
 			write(1, buffer, i);
 			write(1, "\n", 1);
+			usleep(250);
+			kill(meta->si_pid, SIGUSR1);
 			reset_all(&buffer, &last_pid, &i, &offset);
 		}
 		offset = 0;
