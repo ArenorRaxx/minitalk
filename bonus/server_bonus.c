@@ -63,6 +63,7 @@ static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 	static pid_t			last_pid = 0;
 	static unsigned char	*buffer = NULL;
 
+	(void)context;
 	if (last_pid && meta->si_pid != last_pid)
 		reset_all(&buffer, &last_pid, &i, &offset);
 	last_pid = meta->si_pid;
