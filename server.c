@@ -6,7 +6,7 @@
 /*   By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 22:50:18 by mcorso            #+#    #+#             */
-/*   Updated: 2022/02/06 00:49:43by mcorso           ###   ########.fr       */
+/*   Updated: 2022/04/12 17:08:48 by mcorso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	print_pid(pid_t pid)
 		return ;
 	print_pid(pid / 10);
 	nb = (pid % 10) + '0';
-	write(1, &nb, 1);	
+	write(1, &nb, 1);
 }
 
 static void	manage_buffer(char **buffer, int len)
@@ -72,12 +72,13 @@ static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 		buffer[i] |= (1 << offset);
 	else
 		buffer[i] &= ~(1 << offset);
+	usleep(150);
+	kill(last_pid, SIGUSR1);
 	if (++offset == 8)
 	{
 		if (buffer[i++] == '\0')
 		{
-			write(1, buffer, i);
-			write(1, "\n", 1);
+			write_buffer(i, buffer);
 			reset_all(&buffer, &last_pid, &i, &offset);
 		}
 		offset = 0;
