@@ -12,48 +12,13 @@
 
 #include "../minitalk.h"
 
-static void	reset_all(unsigned char **buffer, pid_t *last_pid, int *i, int *offset)
+static void	reset_all(unsigned char **buf, pid_t *last_pid, int *i, int *offset)
 {
-	free(*buffer);
-	*buffer = NULL;
+	free(*buf);
+	*buf = NULL;
 	*last_pid = 0;
 	*offset = 0;
 	*i = 0;
-}
-
-static void	print_pid(pid_t pid)
-{
-	char	nb;
-
-	if (pid <= 0)
-		return ;
-	print_pid(pid / 10);
-	nb = (pid % 10) + '0';
-	write(1, &nb, 1);	
-}
-
-static void	manage_buffer(unsigned char **buffer, int len)
-{
-	int				i;
-	unsigned char	*tmp;
-
-	i = 0;
-	tmp = *buffer;
-	*buffer = malloc(sizeof(**buffer) * len);
-	if (!buffer)
-	{
-		write(1, "Malloc error.\n", 14);
-		free(tmp);
-		exit(EXIT_FAILURE);
-	}
-	if (!tmp)
-		return ;
-	while (i < len)
-	{
-		buffer[0][i] = tmp[i];
-		i++;
-	}
-	free(tmp);
 }
 
 static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
@@ -72,13 +37,13 @@ static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 		buffer[i] |= (1 << offset);
 	else
 		buffer[i] &= ~(1 << offset);
+	usleep(150);
+	kill(last_pid, SIGUSR2);
 	if (++offset == 9)
 	{
 		if (buffer[i++] == '\0')
 		{
-			write(1, buffer, i);
-			write(1, "\n", 1);
-			usleep(250);
+			write_buffer(i, buffer);
 			kill(meta->si_pid, SIGUSR1);
 			reset_all(&buffer, &last_pid, &i, &offset);
 		}

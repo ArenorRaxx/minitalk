@@ -6,19 +6,19 @@
 /*   By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 18:28:34 by mcorso            #+#    #+#             */
-/*   Updated: 2022/04/12 17:08:35 by mcorso           ###   ########.fr       */
+/*   Updated: 2022/04/14 22:40:14 by mcorso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minitalk.h"
 
-static void	handle(int sig)
+void	handle(int sig)
 {
 	(void)sig;
 	return ;
 }
 
-static pid_t	to_pid(char *src)
+pid_t	to_pid(char *src)
 {
 	int		i;
 	pid_t	pid;
