@@ -6,51 +6,65 @@
 #    By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/07 18:59:36 by mcorso            #+#    #+#              #
-#    Updated: 2022/04/13 16:37:24 by mcorso           ###   ########.fr        #
+#    Updated: 2022/02/09 18:51:18 by mcorso           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-#	Name
+#	dir
+BON_DIR			=		./bonus
+
+#	server
+SERVER_SRCS		=		server.c
+SERVER_OBJS		=		$(SERVER_SRCS:.c=.o)
+SERVER_NAME		=		server
+
+SERVER_BONUS	=		./bonus/server_bonus.c
+SERVER_BOBJS	=		$(SERVER_BONUS:.c=.o)
+SERVER_BNAME	=		server_bonus
+
+#	client
+CLIENT_SRCS		=		client.c
+CLIENT_OBJS		=		$(CLIENT_SRCS:.c=.o)
+CLIENT_NAME		=		client
+
+CLIENT_BONUS	=		./bonus/client_bonus.c
+CLIENT_BOBJS	=		$(CLIENT_BONUS:.c=.o)
+CLIENT_BNAME	=		client_bonus
+
+#	compiler
 NAME			=		minitalk
-SERVER			=		server
-CLIENT			=		client
-BONUS			=		bonus
-
-#	Directories
-HEAD			=		.
-DIR_SERVER		=		$(HEAD)/$(SERVER)
-DIR_CLIENT		=		$(HEAD)/$(CLIENT)
-BONUS_DIR		=		$(HEAD)/$(BONUS)
-
-#	Files
-SRC_SERVER		=		$(addsuffix .c, $(DIR_SERVER)/$(SERVER))
-OBJ_SERVER		=		$(SRC_SERVER:.c=.o)
-
-SRC_CLIENT		=		$(addsuffix .c, $(DIR_CLIENT)/$(CLIENT))
-OBJ_CLIENT		=		$(SRC_CLIENT:.c=.o)
-
-#	Compiler
 CC				=		gcc
 CFLAGS			=		-Wall -Werror -Wextra
 
-#	RULES
-all				:		$(NAME)
+#	clean
+CLEAN			=		$(SERVER_BOBJS) $(SERVER_OBJS) $(CLIENT_BOBJS) $(CLIENT_OBJS)
+FCLEAN			=		$(SERVER_BNAME) $(SERVER_NAME) $(CLIENT_BNAME) $(CLIENT_NAME)
 
-$(NAME)			:		server client
+#	rules
+$(NAME)			:		$(SERVER_NAME) $(CLIENT_NAME)
 
-server			:		$(OBJ_SERVER)
-						$(CC) $(CFLAGS) $^ -o $(DIR_SERVER)/$@
+$(SERVER_NAME)	:		$(SERVER_OBJS)
+						$(CC) $(CFLAGS) $^ -o $@
 
-client			:		$(OBJ_CLIENT)
-						$(CC) $(CFLAGS) $^ -o $(DIR_CLIENT)/$@
+$(CLIENT_NAME)	:		$(CLIENT_OBJS)
+						$(CC) $(CFLAGS) $^ -o $@
 
-%.o				:		%.c
-						$(CC) $(CFLAGS) -o $@ -c $<
+$(SERVER_BNAME)	:		$(SERVER_BOBJS)
+						$(CC) $(CFLAGS) $^ -o $@
+
+$(CLIENT_BNAME)	:		$(CLIENT_BOBJS)
+						$(CC) $(CFLAGS) $^ -o $@
+
+all				:		$(NAME) bonus
 
 clean			:
-						-rm -rf $(OBJ_SERVER) $(OBJ_CLIENT)
+						rm -rf $(CLEAN)
 
 fclean			:		clean
-						rm -rf $(DIR_SERVER)/$(SERVER) $(DIR_CLIENT)/$(CLIENT)
+						rm -rf $(FCLEAN)
 
 re				:		fclean all
+
+bonus			:		$(SERVER_BNAME) $(CLIENT_BNAME)
+
+.PHONY			:		all clean fclean re bonus
