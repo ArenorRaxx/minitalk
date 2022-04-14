@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "../minitalk.h"
 
 static void	reset_all(char **buffer, pid_t *last_pid, int *i, int *offset)
 {
