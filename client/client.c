@@ -12,28 +12,6 @@
 
 #include "../minitalk.h"
 
-void	handle(int sig)
-{
-	(void)sig;
-	return ;
-}
-
-pid_t	to_pid(char *src)
-{
-	int		i;
-	pid_t	pid;
-
-	i = 0;
-	pid = 0;
-	while (src[i])
-	{
-		pid *= 10;
-		pid += src[i] - '0';
-		i++;
-	}
-	return (pid);
-}
-
 static void	send_char(pid_t pid, char to_send)
 {
 	int	offset;

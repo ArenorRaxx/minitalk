@@ -21,17 +21,6 @@ static void	reset_all(char **buffer, pid_t *last_pid, int *i, int *offset)
 	*i = 0;
 }
 
-void	print_pid(pid_t pid)
-{
-	char	nb;
-
-	if (pid <= 0)
-		return ;
-	print_pid(pid / 10);
-	nb = (pid % 10) + '0';
-	write(1, &nb, 1);
-}
-
 static void	manage_buffer(char **buffer, int len)
 {
 	int		i;

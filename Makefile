@@ -41,7 +41,7 @@ CC				=		gcc
 CFLAGS			=		-Wall -Werror -Wextra
 
 #	RULES
-all				:		$(NAME)
+all				:		$(NAME) bonus
 
 $(NAME)			:		server client
 
@@ -63,9 +63,11 @@ bonus_client	:		$(OBJBO_CLIE)
 						$(CC) $(CFLAGS) -o $@ -c $<
 
 clean			:
-						-rm -rf $(OBJ_SERVER) $(OBJ_CLIENT)
+						rm -rf $(OBJ_SERVER) $(OBJ_CLIENT)
+						rm -rf $(OBJBO_SERV) $(OBJBO_CLIE)
 
 fclean			:		clean
 						rm -rf $(DIR_SERVER)/$(SERVER) $(DIR_CLIENT)/$(CLIENT)
+						rm -rf $(BONUS_DIR)/bonus_server $(BONUS_DIR)/bonus_client
 
 re				:		fclean all

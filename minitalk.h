@@ -32,8 +32,37 @@ static inline void	write_byte(int sig, unsigned char *buffer, int offset)
 		*buffer &= ~(1 << offset);
 }
 
-void	handle(int sig);
-void	print_pid(pid_t pid);
-pid_t	to_pid(char *src);
+static inline void	handle(int sig)
+{
+	(void)sig;
+	return ;
+}
+
+static inline pid_t	to_pid(char *src)
+{
+	int		i;
+	pid_t	pid;
+
+	i = 0;
+	pid = 0;
+	while (src[i])
+	{
+		pid *= 10;
+		pid += src[i] - '0';
+		i++;
+	}
+	return (pid);
+}
+
+static inline void	print_pid(pid_t pid)
+{
+	char	nb;
+
+	if (pid <= 0)
+		return ;
+	print_pid(pid / 10);
+	nb = (pid % 10) + '0';
+	write(1, &nb, 1);
+}
 
 #endif
