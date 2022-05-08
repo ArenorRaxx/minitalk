@@ -21,6 +21,30 @@ static void	reset_all(unsigned char **buf, pid_t *last_pid, int *i, int *offset)
 	*i = 0;
 }
 
+static void	manage_buffer(unsigned char **buffer, int len)
+{
+	int				i;
+	unsigned char	*tmp;
+
+	i = 0;
+	tmp = *buffer;
+	*buffer = malloc(sizeof(**buffer) * len);
+	if (!buffer)
+	{
+		write(1, "Malloc error.\n", 14);
+		free(tmp);
+		exit(EXIT_FAILURE);
+	}
+	if (!tmp)
+		return ;
+	while (i < len)
+	{
+		buffer[0][i] = tmp[i];
+		i++;
+	}
+	free(tmp);
+}
+
 static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 {
 	static int				i = 0;
@@ -33,17 +57,15 @@ static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 		reset_all(&buffer, &last_pid, &i, &offset);
 	last_pid = meta->si_pid;
 	manage_buffer(&buffer, i + 1);
-	if (sig == SIGUSR1)
-		buffer[i] |= (1 << offset);
-	else
-		buffer[i] &= ~(1 << offset);
+	write_byte(sig, &buffer[i], offset);
 	usleep(150);
 	kill(last_pid, SIGUSR2);
 	if (++offset == 9)
 	{
 		if (buffer[i++] == '\0')
 		{
-			write_buffer(i, buffer);
+			write(1, buffer, i);
+			write(1, "\n", 1);
 			kill(meta->si_pid, SIGUSR1);
 			reset_all(&buffer, &last_pid, &i, &offset);
 		}

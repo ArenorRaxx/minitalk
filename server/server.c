@@ -6,7 +6,7 @@
 /*   By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 22:50:18 by mcorso            #+#    #+#             */
-/*   Updated: 2022/04/14 22:37:09 by mcorso           ###   ########.fr       */
+/*   Updated: 2022/04/15 19:29:42 by mcorso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	print_pid(pid_t pid)
 	write(1, &nb, 1);
 }
 
-void	manage_buffer(char **buffer, int len)
+static void	manage_buffer(char **buffer, int len)
 {
 	int		i;
 	char	*tmp;
