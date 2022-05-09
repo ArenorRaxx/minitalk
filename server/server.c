@@ -6,7 +6,7 @@
 /*   By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 22:50:18 by mcorso            #+#    #+#             */
-/*   Updated: 2022/04/15 19:29:42 by mcorso           ###   ########.fr       */
+/*   Updated: 2022/05/09 13:09:57 by mcorso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,11 @@ int	main(void)
 
 	sender.sa_flags = SA_SIGINFO;
 	sender.sa_sigaction = handle_sigusr;
-	print_pid(getpid());
-	write(1, "\n", 1);
+	sigemptyset(&sender.sa_mask);
 	sigaction(SIGUSR1, &sender, NULL);
 	sigaction(SIGUSR2, &sender, NULL);
+	print_pid(getpid());
+	write(1, "\n", 1);
 	while (1)
 	{
 		pause();
