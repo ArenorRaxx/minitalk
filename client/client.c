@@ -19,11 +19,12 @@ static void	send_char(pid_t pid, char to_send)
 	offset = 0;
 	while (offset <= 7)
 	{
-		if (to_send & (1 << offset++))
+		if (to_send & (1 << offset))
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
 		pause();
+		offset++;
 	}
 }
 

@@ -41,7 +41,6 @@ static void	client_handler(pid_t pid, unsigned char *msg)
 	while (msg[i])
 		send_char(pid, msg[i++]);
 	send_char(pid, '\0');
-	pause();
 }
 
 int	main(int argc, char **argv)

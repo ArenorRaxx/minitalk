@@ -61,7 +61,7 @@ static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 		buffer[i] |= (1 << offset);
 	else
 		buffer[i] &= ~(1 << offset);
-	usleep(150);
+	usleep(200);
 	kill(last_pid, SIGUSR1);
 	if (++offset == 8)
 	{
