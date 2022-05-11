@@ -6,7 +6,7 @@
 /*   By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 18:28:34 by mcorso            #+#    #+#             */
-/*   Updated: 2022/04/14 22:40:21 by mcorso           ###   ########.fr       */
+/*   Updated: 2022/05/11 16:31:33 by mcorso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ static void	receipt(int sig)
 {
 	(void)sig;
 	write(1, "Message has been received.\n", 27);
+}
+
+static void	handle(int sig)
+{
+	(void)sig;
+	return ;
 }
 
 static void	send_char(pid_t pid, unsigned char to_send)

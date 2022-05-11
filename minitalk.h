@@ -6,7 +6,7 @@
 /*   By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 18:35:29 by mcorso            #+#    #+#             */
-/*   Updated: 2022/04/15 19:30:26 by mcorso           ###   ########.fr       */
+/*   Updated: 2022/05/11 16:52:15 by mcorso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,23 @@ static inline void	write_byte(int sig, unsigned char *buffer, int offset)
 		*buffer &= ~(1 << offset);
 }
 
-static inline void	handle(int sig)
+void	*ft_calloc(size_t count, size_t size)
 {
-	(void)sig;
-	return ;
+	char			*dst;
+	unsigned char	total;
+	unsigned char	i;
+
+	i = 0;
+	total = count * size;
+	dst = malloc(total);
+	if (!dst)
+		return (NULL);
+	while (total--)
+	{
+		dst[i] = 0;
+		i++;
+	}
+	return ((void *)dst);
 }
 
 static inline pid_t	to_pid(char *src)
@@ -64,5 +77,7 @@ static inline void	print_pid(pid_t pid)
 	nb = (pid % 10) + '0';
 	write(1, &nb, 1);
 }
+
+void	*ft_calloc(size_t count, size_t size);
 
 #endif
