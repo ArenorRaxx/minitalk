@@ -6,7 +6,7 @@
 #    By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/07 18:59:36 by mcorso            #+#    #+#              #
-#    Updated: 2022/04/15 19:26:41 by mcorso           ###   ########.fr        #
+#    Updated: 2022/05/09 15:49:37 by mcorso           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ NAME			=		minitalk
 SERVER			=		server
 CLIENT			=		client
 BONUS			=		bonus
+BSERV			=		bonus_server
+BCLIE			=		bonus_client
 
 #	Directories
 HEAD			=		.
@@ -30,10 +32,10 @@ SRC_CLIENT		=		$(addsuffix .c, $(DIR_CLIENT)/$(CLIENT))
 OBJ_CLIENT		=		$(SRC_CLIENT:.c=.o)
 
 #	Bonus
-BONUS_SERV		=		$(addprefix $(BONUS)/, $(SERVER)_bonus.c)
+BONUS_SERV		=		$(addsuffix _bonus.c, $(BONUS)/$(SERVER))
 OBJBO_SERV		=		$(BONUS_SERV:.c=.o)
 
-BONUS_CLIE		=		$(addprefix $(BONUS)/, $(CLIENT)_bonus.c)
+BONUS_CLIE		=		$(addsuffix _bonus.c, $(BONUS)/$(CLIENT))
 OBJBO_CLIE		=		$(BONUS_CLIE:.c=.o)
 
 #	Compiler
@@ -41,22 +43,22 @@ CC				=		gcc
 CFLAGS			=		-Wall -Werror -Wextra
 
 #	RULES
-all				:		$(NAME) bonus
+all				:		$(NAME) $(BONUS)
 
-$(NAME)			:		server client
+$(NAME)			:		$(SERVER) $(CLIENT)
 
-bonus			:		bonus_server bonus_client
+$(BONUS)		:		$(BSERV) $(BCLIE)
 
-server			:		$(OBJ_SERVER)
+$(SERVER)		:		$(OBJ_SERVER)
 						$(CC) $(CFLAGS) $< -o $(DIR_SERVER)/$@
 
-client			:		$(OBJ_CLIENT)
+$(CLIENT)		:		$(OBJ_CLIENT)
 						$(CC) $(CFLAGS) $< -o $(DIR_CLIENT)/$@
 
-bonus_server	:		$(OBJBO_SERV)
+$(BSERV)		:		$(OBJBO_SERV)
 						$(CC) $(CFLAGS) $< -o $(BONUS)/$@
 
-bonus_client	:		$(OBJBO_CLIE)
+$(BCLIE)		:		$(OBJBO_CLIE)
 						$(CC) $(CFLAGS) $< -o $(BONUS)/$@
 
 .c.o			:
