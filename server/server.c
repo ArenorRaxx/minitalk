@@ -6,7 +6,7 @@
 /*   By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 22:50:18 by mcorso            #+#    #+#             */
-/*   Updated: 2022/05/11 17:02:19 by mcorso           ###   ########.fr       */
+/*   Updated: 2022/05/11 19:10:46 by mcorso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,10 @@ static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 	if (offset-- == 0)
 	{
 		if (buffer[i++] == '\0')
-		{
-			print_mem(buffer);
 			write_buffer(i - 1, buffer);
-		}
 		offset = 7;
 	}
-	usleep(150);
+	usleep(250);
 	kill(last_pid, SIGUSR1);
 }
 
