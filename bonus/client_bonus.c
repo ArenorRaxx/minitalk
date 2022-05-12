@@ -6,7 +6,7 @@
 /*   By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 18:28:34 by mcorso            #+#    #+#             */
-/*   Updated: 2022/05/11 16:31:33 by mcorso           ###   ########.fr       */
+/*   Updated: 2022/05/12 15:59:17 by mcorso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ static void	send_char(pid_t pid, unsigned char to_send)
 {
 	int	offset;
 
-	offset = 0;
-	while (offset <= 8)
+	offset = 8;
+	while (offset--)
 	{
-		if (to_send & (1 << offset++))
+		if (to_send & (1 << offset))
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
@@ -53,9 +53,11 @@ int	main(int argc, char **argv)
 {
 	signal(SIGUSR1, receipt);
 	signal(SIGUSR2, handle);
-	if (argc == 3)
-		client_handler(to_pid(argv[1]), (unsigned char *)argv[2]);
-	else
+	if (argc != 3)
 		write(1, "./client [PID] [MSG]\n", 21);
+	else if (kill(to_pid(argv[1]), 0) < 0)
+		write(1, "Bad PID.\n", 9);
+	else
+		client_handler(to_pid(argv[1]), (unsigned char *)argv[2]);
 	return (0);
 }
