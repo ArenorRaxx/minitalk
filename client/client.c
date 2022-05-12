@@ -6,7 +6,7 @@
 /*   By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 18:28:34 by mcorso            #+#    #+#             */
-/*   Updated: 2022/05/11 16:50:52 by mcorso           ###   ########.fr       */
+/*   Updated: 2022/05/12 15:07:19 by mcorso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	send_char(pid_t pid, char to_send)
 {
 	int	offset;
 
-	offset = 8;
+	offset = 7;
 	while (offset--)
 	{
 		if (to_send & (1 << offset))
