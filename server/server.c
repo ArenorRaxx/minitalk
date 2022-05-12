@@ -6,7 +6,7 @@
 /*   By: mcorso <mcorso@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 22:50:18 by mcorso            #+#    #+#             */
-/*   Updated: 2022/05/11 19:10:46 by mcorso           ###   ########.fr       */
+/*   Updated: 2022/05/12 15:20:21 by mcorso           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	reset_all(char **buffer, pid_t *last_pid, int *i, int *offset)
 	free(*buffer);
 	*buffer = NULL;
 	*last_pid = 0;
-	*offset = 7;
+	*offset = 6;
 	*i = 0;
 }
 
@@ -25,12 +25,9 @@ static void	manage_buffer(char **buffer, int len)
 {
 	int			i;
 	char		*tmp;
-	static int	last_len = -1;
 
 	i = 0;
 	tmp = *buffer;
-	if (last_len == len)
-		return ;
 	*buffer = ft_calloc(len + 1, sizeof(**buffer));
 	if (!buffer)
 	{
@@ -45,10 +42,9 @@ static void	manage_buffer(char **buffer, int len)
 		buffer[0][i] = tmp[i];
 		i++;
 	}
-	last_len = len;
 	free(tmp);
 }
-
+/* Debug
 void	print_mem(char *buffer)
 {
 	int i;
@@ -72,12 +68,12 @@ void	print_mem(char *buffer)
 		offset = 8;
 		i++;
 	}
-}
+} */
 
 static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 {
 	static int		i = 0;
-	static int		offset = 7;
+	static int		offset = 6;
 	static char		*buffer = NULL;
 	static pid_t	last_pid = 0;
 
@@ -85,7 +81,8 @@ static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 	if (last_pid && meta->si_pid != last_pid)
 		reset_all(&buffer, &last_pid, &i, &offset);
 	last_pid = meta->si_pid;
-	manage_buffer(&buffer, i);
+	if (offset == 6)
+		manage_buffer(&buffer, i);
 	if (sig == SIGUSR1)
 		buffer[i] |= (1 << offset);
 	else
@@ -94,9 +91,9 @@ static void	handle_sigusr(int sig, siginfo_t *meta, void *context)
 	{
 		if (buffer[i++] == '\0')
 			write_buffer(i - 1, buffer);
-		offset = 7;
+		offset = 6;
 	}
-	usleep(250);
+	usleep(100);
 	kill(last_pid, SIGUSR1);
 }
 
